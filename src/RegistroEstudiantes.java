@@ -8,6 +8,10 @@ public class RegistroEstudiantes {
     public static double nota1;
     public static double nota2;
     public static double nota3;
+    public static double tempNota1;
+    public static double tempNota2;
+    public static double tempNota3;
+    public static String tempNombre;
 
     public static void main(String[] args) {
         // Crear objeto Scanner para leer la entrada del usuario
@@ -84,9 +88,9 @@ public class RegistroEstudiantes {
         } else {
             double promedio = (nota1 + nota2 + nota3) / 3;
             if (verificarAprobado(promedio)) {
-                System.out.printf("El promedio de notas del estudiante es: %.2f y su estado es Aprobado", promedio);
+                System.out.printf("El promedio de notas del estudiante es: %.2f y su estado es Aprobado.\n", promedio);
             } else {
-                System.out.printf("El promedio de notas del estudiante es: %.2f y su estado es Reprobado", promedio);
+                System.out.printf("El promedio de notas del estudiante es: %.2f y su estado es Reprobado.\n", promedio);
             }
 
         }
@@ -112,63 +116,81 @@ public class RegistroEstudiantes {
     public static void registroDatosEstudiante(Scanner entrada) {
         // Solicitar y validar el nombre
         System.out.println("Digite el nombre del estudiante");
-        nombre = entrada.nextLine();
-        while (!validarNombre(nombre)) {
+        tempNombre = entrada.nextLine();
+        while (!validarNombre(tempNombre)) {
             System.out.println("Este campo debe contener solo letras. Intente de nuevo");
-            nombre = entrada.nextLine();
+            tempNombre = entrada.nextLine();
         }
 
         // Solicitar y validar la nota 1
-        double tempNota;
         do {
             System.out.print("Digite la nota 1: ");
             if (entrada.hasNextDouble()) {
-                tempNota = entrada.nextDouble();
+                tempNota1 = entrada.nextDouble();
                 entrada.nextLine();
-                if (!validarNota(tempNota)) {
+                if (!validarNota(tempNota1)) {
                     System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
                 }
             } else {
                 System.out.println("Nota inválida. Debe ser un número");
                 entrada.next();
-                tempNota = -1;
+                tempNota1 = -1;
             }
-        } while (!validarNota(tempNota));
-        nota1 = tempNota;
+        } while (!validarNota(tempNota1));
 
         // Solicitar y validar la nota 2
         do {
             System.out.print("Digite la nota 2: ");
             if (entrada.hasNextDouble()) {
-                tempNota = entrada.nextDouble();
+                tempNota2 = entrada.nextDouble();
                 entrada.nextLine();
-                if (!validarNota(tempNota)) {
+                if (!validarNota(tempNota2)) {
                     System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
                 }
             } else {
                 System.out.println("Nota inválida. Debe ser un número");
                 entrada.next();
-                tempNota = -1;
+                tempNota2 = -1;
             }
-        } while (!validarNota(tempNota));
-        nota2 = tempNota;
+        } while (!validarNota(tempNota2));
 
         // Solicitar y validar la nota 3
         do {
             System.out.print("Digite la nota 3: ");
             if (entrada.hasNextDouble()) {
-                tempNota = entrada.nextDouble();
+                tempNota3 = entrada.nextDouble();
                 entrada.nextLine();
-                if (!validarNota(tempNota)) {
+                if (!validarNota(tempNota3)) {
                     System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
                 }
             } else {
                 System.out.println("Nota inválida. Debe ser un número");
                 entrada.next();
-                tempNota = -1;
+                tempNota3 = -1;
             }
-        } while (!validarNota(tempNota));
-        nota3 = tempNota;
+        } while (!validarNota(tempNota3));
+
+        System.out.println("\n--- Resumen de los datos a registrar ---");
+        System.out.printf("Nombre: %s\n", tempNombre);
+        System.out.printf("Nota 1: %s\n", tempNota1);
+        System.out.printf("Nota 2: %s\n", tempNota2);
+        System.out.printf("Nota 3: %s\n", tempNota3);
+        System.out.print("¿Desea confirmar el registro? (S/N): ");
+        String confirm = entrada.nextLine();
+        confirmarDatos(confirm);
+    }
+
+    // Metodo para confirmar datos a guardar
+    public static void confirmarDatos(String confirm) {
+        if (confirm.equalsIgnoreCase("S")) {
+            nombre = tempNombre;
+            nota1 = tempNota1;
+            nota2 = tempNota2;
+            nota3 = tempNota3;
+            System.out.println("--- Registro confirmado ---");
+        } else {
+            System.out.println("--- Registro cancelado ---");
+        }
     }
 
     // Método para leer un número entero de la consola con validación
