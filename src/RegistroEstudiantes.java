@@ -83,8 +83,12 @@ public class RegistroEstudiantes {
             System.out.println("No existen datos para mostrar");
         } else {
             double promedio = (nota1 + nota2 + nota3) / 3;
-            verificarAprobado(promedio);
-            System.out.printf("El promedio de notas del estudiante es: %.2f\n", promedio);
+            if (verificarAprobado(promedio)) {
+                System.out.printf("El promedio de notas del estudiante es: %.2f y su estado es Aprobado", promedio);
+            } else {
+                System.out.printf("El promedio de notas del estudiante es: %.2f y su estado es Reprobado", promedio);
+            }
+
         }
     }
 
@@ -115,49 +119,56 @@ public class RegistroEstudiantes {
         }
 
         // Solicitar y validar la nota 1
+        double tempNota;
         do {
             System.out.print("Digite la nota 1: ");
             if (entrada.hasNextDouble()) {
-                nota1 = entrada.nextDouble();
+                tempNota = entrada.nextDouble();
                 entrada.nextLine();
-                if (!validarNota(nota1)) {
+                if (!validarNota(tempNota)) {
                     System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
                 }
             } else {
                 System.out.println("Nota inválida. Debe ser un número");
                 entrada.next();
+                tempNota = -1;
             }
-        } while (!validarNota(nota1));
+        } while (!validarNota(tempNota));
+        nota1 = tempNota;
 
         // Solicitar y validar la nota 2
         do {
             System.out.print("Digite la nota 2: ");
             if (entrada.hasNextDouble()) {
-                nota2 = entrada.nextDouble();
+                tempNota = entrada.nextDouble();
                 entrada.nextLine();
-                if (!validarNota(nota2)) {
+                if (!validarNota(tempNota)) {
                     System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
                 }
             } else {
                 System.out.println("Nota inválida. Debe ser un número");
                 entrada.next();
+                tempNota = -1;
             }
-        } while (!validarNota(nota2));
+        } while (!validarNota(tempNota));
+        nota2 = tempNota;
 
         // Solicitar y validar la nota 3
         do {
-            System.out.print("Digite la nota 3: 1");
+            System.out.print("Digite la nota 3: ");
             if (entrada.hasNextDouble()) {
-                nota3 = entrada.nextDouble();
+                tempNota = entrada.nextDouble();
                 entrada.nextLine();
-                if (!validarNota(nota3)) {
+                if (!validarNota(tempNota)) {
                     System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
                 }
             } else {
                 System.out.println("Nota inválida. Debe ser un número");
                 entrada.next();
+                tempNota = -1;
             }
-        } while (!validarNota(nota3));
+        } while (!validarNota(tempNota));
+        nota3 = tempNota;
     }
 
     // Método para leer un número entero de la consola con validación
