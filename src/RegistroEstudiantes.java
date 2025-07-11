@@ -2,19 +2,25 @@ import java.util.Scanner;
 
 public class RegistroEstudiantes {
 
+    // Variables estáticas para almacenar los datos del estudiante actual
     public static String nombre;
+    public static double nota;
     public static double nota1;
     public static double nota2;
     public static double nota3;
 
     public static void main(String[] args) {
+        // Crear objeto Scanner para leer la entrada del usuario
         var entrada = new Scanner(System.in);
 
+        // Llamar al menú principal
         lanzarMenu(entrada);
 
+        // Cerrar el Scanner al finalizar
         entrada.close();
     }
 
+    // Método que muestra el menú principal y gestiona las opciones del usuario
     public static void lanzarMenu(Scanner entrada) {
         var salida = false;
 
@@ -29,40 +35,67 @@ public class RegistroEstudiantes {
                     0. Salir
                     """);
 
+            // Leer la opción elegida por el usuario
             var opcion = leerEntero(entrada, "Ingrese una opción: ");
             switch (opcion) {
                 case 1:
+                    // Registrar estudiante
                     registroDatosEstudiante(entrada);
                     break;
                 case 2:
+                    // Mostrar datos del estudiante actual
                     mostrarDatosEstudiante();
                     break;
                 case 3:
+                    // Calcular promedio de notas del estudiante actual
                     calcularPromedioNotas();
                     break;
                 case 0:
+                    // Salir del menú
                     salida = true;
                     break;
                 default:
+                    // Opción no válida
                     System.out.println("Opción no válida, por favor intente de nuevo.");
             }
         } while (!salida);
         System.out.println("--- Gracias por usar el sistema de registro de estudiantes ---");
     }
 
+    // Método para validar el nombre del estudiante
+    public static boolean validarNombre(String nombre) {
+        // Verifica que el nombre no sea nulo, no esté vacío y solo contenga letras y
+        // espacios
+        return nombre != null && !nombre.trim().isEmpty() && nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+");
+    }
+
+    // Método para validar que la nota esté en el rango permitido
+    public static boolean validarNota(double nota) {
+
+        // Verifica que la nota esté entre 0 y 100 inclusive
+        return nota >= 0 && nota <= 100;
+    }
+
+    // Método para calcular y mostrar el promedio de las notas
     private static void calcularPromedioNotas() {
-        if (nota1 == 0 || nota1 == 0 || nota1 == 0) {
+        // Verifica si las notas están registradas
+        if (nombre == null || nombre.trim().isEmpty()) {
             System.out.println("No existen datos para mostrar");
         } else {
             double promedio = (nota1 + nota2 + nota3) / 3;
+            verificarAprobado(promedio);
             System.out.printf("El promedio de notas del estudiante es: %.2f\n", promedio);
         }
     }
 
-    public static void mostrarDatosEstudiante() {
+    public static boolean verificarAprobado(double nota) {
+        return nota >= 60;
+    }
 
+    // Método para mostrar los datos del estudiante actual
+    public static void mostrarDatosEstudiante() {
         if (nombre == null) {
-            System.out.println("N/A");
+            System.out.println("No hay estudiante registrado");
         } else {
             System.out.printf("El nombre del estudiante es: %s\n", nombre);
             System.out.printf("la nota 1 del estudiante es: %.1f\n", nota1);
@@ -71,45 +104,65 @@ public class RegistroEstudiantes {
         }
     }
 
+    // Método para registrar los datos del estudiante
     public static void registroDatosEstudiante(Scanner entrada) {
-
+        // Solicitar y validar el nombre
         System.out.println("Digite el nombre del estudiante");
         nombre = entrada.nextLine();
-        while (!nombre.matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+"))) {
+        while (!validarNombre(nombre)) {
             System.out.println("Este campo debe contener solo letras. Intente de nuevo");
             nombre = entrada.nextLine();
         }
 
-        System.out.print("Digite la nota 1: ");
-        while (!entrada.hasNextDouble()) {
-            System.out.println("Nota inválida. Por favor ingrese un número.");
-            entrada.next();
+        // Solicitar y validar la nota 1
+        do {
             System.out.print("Digite la nota 1: ");
-        }
-        nota1 = entrada.nextDouble();
-        entrada.nextLine();
+            if (entrada.hasNextDouble()) {
+                nota1 = entrada.nextDouble();
+                entrada.nextLine();
+                if (!validarNota(nota1)) {
+                    System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
+                }
+            } else {
+                System.out.println("Nota inválida. Debe ser un número");
+                entrada.next();
+            }
+        } while (!validarNota(nota1));
 
-        System.out.print("Digite la nota 2: ");
-        while (!entrada.hasNextDouble()) {
-            System.out.println("Nota inválida. Por favor ingrese un número.");
-            entrada.next();
+        // Solicitar y validar la nota 2
+        do {
             System.out.print("Digite la nota 2: ");
-        }
-        nota2 = entrada.nextDouble();
-        entrada.nextLine();
+            if (entrada.hasNextDouble()) {
+                nota2 = entrada.nextDouble();
+                entrada.nextLine();
+                if (!validarNota(nota2)) {
+                    System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
+                }
+            } else {
+                System.out.println("Nota inválida. Debe ser un número");
+                entrada.next();
+            }
+        } while (!validarNota(nota2));
 
-        System.out.print("Digite la nota 3: ");
-        while (!entrada.hasNextDouble()) {
-            System.out.println("Nota inválida. Por favor ingrese un número.");
-            entrada.next();
-            System.out.print("Digite la nota 3: ");
-        }
-        nota3 = entrada.nextDouble();
-        entrada.nextLine();
+        // Solicitar y validar la nota 3
+        do {
+            System.out.print("Digite la nota 3: 1");
+            if (entrada.hasNextDouble()) {
+                nota3 = entrada.nextDouble();
+                entrada.nextLine();
+                if (!validarNota(nota3)) {
+                    System.out.println("Nota inválida. Nota debe ser un número entre 0 y 100. Intente de nuevo.");
+                }
+            } else {
+                System.out.println("Nota inválida. Debe ser un número");
+                entrada.next();
+            }
+        } while (!validarNota(nota3));
     }
 
+    // Método para leer un número entero de la consola con validación
     public static int leerEntero(Scanner entrada, String mensaje) {
-        System.out.println(mensaje);
+        System.out.print(mensaje);
         if (!entrada.hasNextInt()) {
             System.out.println("Entrada no válida. Por favor, ingrese un número entero.");
             entrada.nextLine(); // Limpiar el buffer de entrada
@@ -120,5 +173,4 @@ public class RegistroEstudiantes {
             return input;
         }
     }
-
 }
